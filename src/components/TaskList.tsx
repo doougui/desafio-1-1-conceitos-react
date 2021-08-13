@@ -28,29 +28,22 @@ export function TaskList() {
       isComplete: false,
     };
     
-    setTasks([...tasks, newTask]);
+    setTasks(oldState => [...oldState, newTask]);
     setNewTaskTitle('');
   }
 
   function handleToggleTaskCompletion(id: number) {
-    const currentTasks = tasks;
+    const newTasks = tasks.map(task => task.id === id ? {
+      ...task,
+      isComplete: !task.isComplete,
+    } : task);
 
-    const taskToComplete = currentTasks.find(task => task.id === id);
-
-    if (taskToComplete) {
-      taskToComplete.isComplete = !taskToComplete.isComplete;
-    }
-
-    setTasks([...currentTasks]);
+    setTasks(newTasks);
   }
 
   function handleRemoveTask(id: number) {
-    const currentTasks = tasks;
-
-    const taskToDelete = currentTasks.find(task => task.id === id);
-    const filteredTasks = currentTasks.filter(task => task !== taskToDelete);
-
-    setTasks([...filteredTasks]);
+    const filteredTasks = tasks.filter(task => task.id !== id);
+    setTasks(filteredTasks);
   }
 
   return (
