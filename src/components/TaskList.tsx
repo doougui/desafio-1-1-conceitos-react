@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, KeyboardEvent } from 'react'
 
 import '../styles/tasklist.scss'
 
@@ -13,6 +13,11 @@ interface Task {
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key !== 'Enter') return;
+    handleCreateNewTask();
+  }
 
   function handleCreateNewTask() {
     if (!newTaskTitle) return;
@@ -58,6 +63,7 @@ export function TaskList() {
             type="text" 
             placeholder="Adicionar novo todo" 
             onChange={(e) => setNewTaskTitle(e.target.value)}
+            onKeyDown={handleKeyDown}
             value={newTaskTitle}
           />
           <button type="submit" data-testid="add-task-button" onClick={handleCreateNewTask}>
